@@ -7,11 +7,11 @@ var gameState = "fight"
 
 function preload()
 {
-  playerImg = loadImage("sprites/pixil-frame-0(24).png")
+  playerImg = loadImage("sprites/pixilframe24.png") //eu renomeei os arquivos de imagem todos tbm para tirar os - e os (
   //shooter_shooting = loadImage("assets/shooter_3.png")
  // zombieImg = loadImage("assets/zombie.png")
-  chaoImg = loadImage("sprites/pixil-frame-0(26).png")
-  paredeImg = loadImage("sprites/pixil-frame-0(9).png")
+  chaoImg = loadImage("sprites/pixilframe26.png")
+  paredeImg = loadImage("sprites/pixilframe9.png")
   //heart1Img = loadImage("assets/heart_1.png")
   //heart2Img = loadImage("assets/heart_2.png")
   //heart3Img = loadImage("assets/heart_3.png")
@@ -22,178 +22,41 @@ function preload()
 
 function setup() 
 {  
-  createCanvas(windowWidth,windowHeight);
+  //OBSERVAÇÃO: INDENTE BEM SEU CÓDIGO! ISSO FACILITA ACHAR OS ERROS E A LEITURA DO CÓDIGO
+  createCanvas(windowWidth, windowHeight);
 
   //adicionando a imagem de fundo
-  chao=createSprite(displayWidth/2-20,displayHeight/2-40,20,20);
-  chao.addImage(chaoImg);
+  chao = createSprite (displayWidth / 2 - 20, displayHeight / 2 - 40, 20, 20);
+  chao.addImage("chao", chaoImg);
   chao.scale= 1.28;
-  parede=createSprite(displayWidth/2-20,displayHeight/2-40,20,20);
-  parede.addImage(paredeImg);
+  
+  parede = createSprite(displayWidth / 2 - 20, displayHeight / 2 - 40, 20, 20);
+  parede.addImage("parede", paredeImg);
   parede.scale= 1.28;
+  
   //criando o sprite do jogador
-  player = createSprite(displayWidth-1150,displayHeight-300,50,50);
+  player = createSprite(displayWidth - 1150, displayHeight - 300,5 0, 50);
   player.addImage(playerImg);
   player.scale=0.4;
   //player.debug=true;
   player.setCollider("rectangle",0,0,300,300)
-
-  //Crindo um grupo de zumbis e balas
-  /*zombieGroup= new Group();
-  bulletGroup = new Group()
-  //Criando barra de vida
-  heart1 = createSprite(displayWidth-150,40,20,20);
-  heart1.visible = false;
-  heart1.addImage("heart1",heart1Img);
-  heart1.scale=0.4;
-  heart2 = createSprite(displayWidth-100,40,20,20);
-  heart2.visible = false;
-  heart2.addImage("heart2",heart2Img);
-  heart2.scale=0.4;
-  heart3 = createSprite(displayWidth-150,40,20,20);
-  heart3.addImage("heart3",heart3Img);
-  heart3.scale=0.4;*/
-
-
-
-
-
-
 }
 
 function draw() 
 {
   background(0); 
+  
   if (gameState === "fight") {
+    //movendo o jogador para cima e para baixo e tornando o jogo compatível com dispositivos móveis usando toques
+    if(keyDown("UP_ARROW")||touches.length>0){
+      player.y = player.y-30
+    }
     
-  /*if (life===3) {
-    heart3.visible = true
-    heart1.visible = false
-    heart2.visible = false
-  }
-  if (life===2) {
-    heart2.visible = true
-    heart1.visible = false
-    heart3.visible = false 
-  }
-  if (life===1) {
-    heart2.visible = false
-    heart1.visible = true
-    heart3.visible = false 
-  }
-if (life===0) {
-  gameState = "lost"
-  heart2.visible = false
-  heart1.visible = false
-  heart3.visible = false 
-}
-if (score==100) {
-  gameState = "won"
-  winning.play();
-}*/
-   //movendo o jogador para cima e para baixo e tornando o jogo compatível com dispositivos móveis usando toques
-if(keyDown("UP_ARROW")||touches.length>0){
-  player.y = player.y-30
-}
-if(keyDown("DOWN_ARROW")||touches.length>0){
- player.y = player.y+30
-}
-//solte balas e mude a imagem do atirador para a posição de tiro quando a tecla de espaço for pressionada
-/*if(keyWentDown("space")){
- bullet = createSprite(displayWidth-1150,player.y-30,20,10)
- bullet.velocityX = 20
-
- bulletGroup.add(bullet)
- player.depth = bullet.depth
- player.depth = player.depth+2
-  player.addImage(shooter_shooting)
-  bullets = bullets-1
-  explosionSound.play();
- */
-}
-
-//o jogador volta à imagem original quando pararmos de pressionar a barra de espaço
-else if(keyWentUp("space")){
-  player.addImage(shooterImg)
-}
-if (bullets==0) {
-  gameState = "bullet"
-  lose.play()
-  
-}
-if (zombieGroup.isTouching(bulletGroup)) {
-  for (var i=0;i<zombieGroup.length;i++){
-    if(zombieGroup[i].isTouching(bulletGroup)){
-      zombieGroup[i].destroy()
-      bulletGroup.destroyEach()
-      explosionSound.play();
-
-      score = score+2
+    if(keyDown("DOWN_ARROW")||touches.length>0){
+      player.y = player.y+30
     }
-  }
+
   }
 
-
-//quando o jogador tocar nos zumbis
-/*if (zombieGroup.isTouching(player)) {
-   lose.play();
-  for(var i=0;i<zombieGroup.length;i++){
-    if (zombieGroup[i].isTouching(player)) {
-      zombieGroup[i].destroy()
-      life=life-1
-      
-    }
-  }
-  
-}
-
-
-  zumbi();
-  }
-*/
   drawSprites();
-  
-/* textSize(20)
-  fill("white") 
-  text("Balas = " +bullets,displayWidth-200,displayHeight/2-250)
-  text("Pontuação = " + score,displayWidth-200,displayHeight/2-220)
-  //text("Vidas = " + life,displayWidth-200,displayHeight/2-280)
-
-   if (gameState == "lost") {
-   textSize(100)
-   fill("red")
-   text("Você Perdeu!!!",400,400)
-   zombieGroup.destroyEach();
-   player.destroy();
 }
-else if(gameState == "won"){
-  textSize(100)
-  fill("yellow")
-  text("Você Venceu",400,400)
-  zombieGroup.destroyEach();
-   player.destroy();
-}
-else if(gameState == "bullet"){
-  textSize(50)
-  fill("yellow")
-  text("Você não tem mais balas!",470,410)
-  zombieGroup.destroyEach();
-   player.destroy();
-   bulletGroup.destroyEach();
-}
-
-*/
-}
-
-//function zumbi(){
-  //if (frameCount%50===0) {
-   // zombie = createSprite(random(900,1300),random(100,500),40,40);
-   // zombie.addImage(zombieImg);
-   // zombie.scale=random(0.12,0.20);
-   /// zombie.velocityX= -3;
-    //zombie.debug = true;
-   // zombie.setCollider("circle",0,0,400);
-   // zombie.lifeTime=400
-   // zombieGroup.add(zombie)
-//  }
-//
